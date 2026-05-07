@@ -1,0 +1,4714 @@
+{
+  "paths": {
+    "/authentication": {
+      "post": {
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Returns the successfully created auth token",
+                  "type": "object",
+                  "required": [
+                    "accessToken"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "accessToken": {
+                      "description": "The auth token that can be used to create new fidentity processes or to get data from existing ones.",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "401",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "500": {
+            "description": "general error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "500",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          }
+        },
+        "summary": "Get auth token",
+        "description": "Before a new fidentity process can be started or data from an existing process can be read, the client must authenticate itself. Consider to reuse the token for multiple requests because this endpoint is strictly rate limited.",
+        "tags": [
+          "Authentication"
+        ],
+        "requestBody": {
+          "description": "authentication object that needs to be created",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/authentication"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fidentity": {
+      "post": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "tags": [
+          "fidentity"
+        ],
+        "summary": "Create a new fidentity process",
+        "description": "With this service you can start a new fidentity processes.",
+        "operationId": "createProcess",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/input"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "fidentity process reference",
+                  "properties": {
+                    "extId": {
+                      "$ref": "#/components/schemas/extId"
+                    },
+                    "expires": {
+                      "type": "string",
+                      "title": "expiry date of processUrl",
+                      "example": "2017-12-22T17:46:21.035Z",
+                      "pattern": "^([\\d\\-ZT:\\.]*)$",
+                      "format": "date-time"
+                    },
+                    "processUrl": {
+                      "type": "string",
+                      "title": "The url to the fidentity process, it is only valid until the expiry date",
+                      "example": "https://demo.fidentity.ch/start-process/94392b61-7ba5-43c3-81a2-630e5f3848b1",
+                      "maxLength": 300
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "401",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "404",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "405",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "500": {
+            "description": "general error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "500",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "summary": "Get all fidentity process",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Date filter for process list as ISO date string",
+            "example": "2022-06-01",
+            "schema": {
+              "type": "string",
+              "example": "2017-12-22T17:46:21.035Z",
+              "pattern": "^([\\d\\-ZT:\\.]*)$",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "title": "fidentity list",
+                  "items": {
+                    "$ref": "#/components/schemas/fidentity"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "401",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "404",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "500": {
+            "description": "general error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "500",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          }
+        },
+        "description": "Retrieves a list of fidentity processes from the service. By default the last 5 days are returned (max 1000 processes).",
+        "tags": [
+          "fidentity"
+        ]
+      }
+    },
+    "/fidentity/{extId}": {
+      "get": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "extId",
+            "in": "path",
+            "description": "External unique ID for the process.",
+            "example": "as34-33fds232-adsdsd232-sdsd34",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/fidentity"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "401",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "404",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "500": {
+            "description": "general error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "500",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          }
+        },
+        "description": "Retrieves a single fidentity with the given extId from the service.",
+        "summary": "Gets a fidentity process by extId from the service.",
+        "tags": [
+          "fidentity"
+        ]
+      }
+    },
+    "/fidentity/state/{extId}": {
+      "get": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "extId",
+            "in": "path",
+            "description": "External unique ID for the process.",
+            "example": "as34-33fds232-adsdsd232-sdsd34",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "fidentity state",
+                  "properties": {
+                    "extId": {
+                      "$ref": "#/components/schemas/extId"
+                    },
+                    "score": {
+                      "$ref": "#/components/schemas/score"
+                    },
+                    "quality": {
+                      "$ref": "#/components/schemas/quality"
+                    },
+                    "decision": {
+                      "$ref": "#/components/schemas/decision"
+                    },
+                    "state": {
+                      "$ref": "#/components/schemas/state"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "401",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "404",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "500": {
+            "description": "general error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "500",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          }
+        },
+        "description": "Retrieves the state of a fidentity process.",
+        "summary": "Get state of fidentity process",
+        "tags": [
+          "fidentity"
+        ]
+      }
+    },
+    "/fidentity/resetCustomer/{extId}": {
+      "post": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "tags": [
+          "fidentity"
+        ],
+        "summary": "Reset a fidentity process and Customer",
+        "description": "With this service you can reset a existing fidentity process and the associated process with the help of the extId. The Body of the POST Request is empty",
+        "parameters": [
+          {
+            "name": "extId",
+            "in": "path",
+            "description": "External unique ID for the process.",
+            "example": "as34-33fds232-adsdsd232-sdsd34",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "fidentity process reference",
+                  "properties": {
+                    "extId": {
+                      "$ref": "#/components/schemas/extId"
+                    },
+                    "expires": {
+                      "type": "string",
+                      "title": "expiry date of processUrl",
+                      "example": "2017-12-22T17:46:21.035Z",
+                      "pattern": "^([\\d\\-ZT:\\.]*)$",
+                      "format": "date-time"
+                    },
+                    "processUrl": {
+                      "type": "string",
+                      "title": "The url to the fidentity process, it is only valid until the expiry date",
+                      "example": "https://demo.fidentity.ch/start-process/94392b61-7ba5-43c3-81a2-630e5f3848b1",
+                      "maxLength": 300
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "401",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "404",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "405",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "500": {
+            "description": "general error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "500",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          }
+        }
+      }
+    },
+    "/fidentity/refresh-link/{extId}": {
+      "get": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "tags": [
+          "fidentity"
+        ],
+        "summary": "get a fresh link for a created process",
+        "description": "With this service you can get a fresh link to a existing fidentity process by the extId.",
+        "parameters": [
+          {
+            "name": "extId",
+            "in": "path",
+            "description": "External unique ID for the process.",
+            "example": "as34-33fds232-adsdsd232-sdsd34",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "fidentity process reference",
+                  "properties": {
+                    "extId": {
+                      "$ref": "#/components/schemas/extId"
+                    },
+                    "expires": {
+                      "type": "string",
+                      "title": "expiry date of processUrl",
+                      "example": "2017-12-22T17:46:21.035Z",
+                      "pattern": "^([\\d\\-ZT:\\.]*)$",
+                      "format": "date-time"
+                    },
+                    "processUrl": {
+                      "type": "string",
+                      "title": "The url to the fidentity process, it is only valid until the expiry date",
+                      "example": "https://demo.fidentity.ch/start-process/94392b61-7ba5-43c3-81a2-630e5f3848b1",
+                      "maxLength": 300
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "401",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "404",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "405",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "500": {
+            "description": "general error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "500",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          }
+        }
+      }
+    },
+    "/fidentity/process-scan/{processStep}/{extId}": {
+      "post": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "tags": [
+          "fidentity"
+        ],
+        "summary": "Process scanned images",
+        "description": "With this service you can send scanned images for a fidentity process by the extId.",
+        "parameters": [
+          {
+            "name": "extId",
+            "in": "path",
+            "description": "External unique ID for the process.",
+            "example": "as34-33fds232-adsdsd232-sdsd34",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "processStep",
+            "in": "path",
+            "description": "Type of the processStep to which images belong.",
+            "example": "DocumentRegistration",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "DocumentRegistration"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "images"
+                ],
+                "properties": {
+                  "images": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "data",
+                        "mimetype"
+                      ],
+                      "properties": {
+                        "data": {
+                          "type": "string",
+                          "format": "binary",
+                          "title": "The image data (base64)",
+                          "example": "<base 64 string>"
+                        },
+                        "mimetype": {
+                          "type": "string",
+                          "title": "The image mimetype",
+                          "example": "image/png"
+                        },
+                        "id": {
+                          "type": "string",
+                          "title": "An image id (optional)"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "401": {
+            "description": "not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "401",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "404",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "405",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "500": {
+            "description": "general error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "500",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          }
+        }
+      }
+    },
+    "/dms/{processId}/{documentId}": {
+      "put": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "processId",
+            "in": "path",
+            "description": "Unique ID for the process.",
+            "example": "as34-33fds232-process",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "Unique ID for the document.",
+            "example": "document-adsdsd232-sdsd34",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-document-state",
+            "in": "header",
+            "description": "state of the document.",
+            "example": "signed",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "signed",
+                "rejected",
+                "created",
+                "viewed"
+              ]
+            }
+          }
+        ],
+        "tags": [
+          "dms"
+        ],
+        "summary": "Update document with a signed version",
+        "description": "Update document with a signed version.",
+        "operationId": "updateDocument",
+        "requestBody": {
+          "content": {
+            "application/pdf": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success"
+          },
+          "401": {
+            "description": "not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "401",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "404",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "405",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "500": {
+            "description": "general error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "500",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "processId",
+            "in": "path",
+            "description": "Unique ID for the process.",
+            "example": "as34-33fds232-process",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "Unique ID for the document.",
+            "example": "document-adsdsd232-sdsd34",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "dms"
+        ],
+        "summary": "Get document",
+        "description": "Get document for a process",
+        "operationId": "getDocument",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "401",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "404",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "500": {
+            "description": "general error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "500",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          }
+        }
+      }
+    },
+    "/dms/{processId}": {
+      "post": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "processId",
+            "in": "path",
+            "description": "Unique ID for the process.",
+            "example": "as34-33fds232-process",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "dms"
+        ],
+        "summary": "Upload a new document for signature",
+        "description": "Upload a new document for signature, while process is in state reviewed",
+        "operationId": "createDocument",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "title": "Input document data",
+                  "required": [
+                    "type",
+                    "data",
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "title": "The id of the document",
+                      "example": "37283719273"
+                    },
+                    "type": {
+                      "type": "string",
+                      "title": "type of document, values are used to distinguish the document types",
+                      "default": "signature",
+                      "example": "contract"
+                    },
+                    "title": {
+                      "type": "string",
+                      "title": "The document title",
+                      "example": "Vorsorgevertrag"
+                    },
+                    "flatten": {
+                      "type": "boolean",
+                      "title": "If true, the document will be flattened. This means that all form fields will be removed and the document will be saved as a flat PDF. This is useful for signing documents that contain form fields.",
+                      "default": false
+                    },
+                    "data": {
+                      "type": "string",
+                      "title": "The document data (base64)",
+                      "example": "<base 64 string>"
+                    },
+                    "signature_position": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "title": "section to position the electronic signature",
+                          "additionalProperties": false,
+                          "properties": {
+                            "x": {
+                              "type": "number",
+                              "title": "The x position from the left in user space units (distance in inch*72)",
+                              "minimum": 0,
+                              "maximum": 1125,
+                              "example": 120
+                            },
+                            "y": {
+                              "type": "number",
+                              "title": "The y position from the top in user space units (distance in inch*72)",
+                              "minimum": 0,
+                              "maximum": 2436,
+                              "example": 60
+                            },
+                            "page": {
+                              "type": "number",
+                              "title": "The page index, starting at 0 for first page. Use -1 to place the signature on the last page.",
+                              "minimum": -1,
+                              "maximum": 10000,
+                              "example": 50
+                            }
+                          }
+                        },
+                        {
+                          "type": "object",
+                          "title": "Placeholder string to position the electronic signature. This feature is only available if \"Signature\" type is set in processSteps.",
+                          "additionalProperties": false,
+                          "properties": {
+                            "placeholder": {
+                              "type": "string",
+                              "title": "Instead of coordinates and page number you can pass a placeholder string. The signature will be inserted at the first occurence of the placeholder in the pdf document. The placeholder in the pdf needs to be between 2 dollar signs: $$Signature-0001$$. However you must only pass the placeholder string to the request, without dollar signs. The placeholder in the pdf may also contain the desired width and height of the signature box as well as the desired signature text. Example1: $$Signature-0001,100,50$$ (Placeholdername, width, height) Example2: $$Signature-0001,100,50,Signed by John Doe$$ (Placeholdername, width, height, signature text).",
+                              "example": "Signature-0001"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "visualSignature": {
+                      "type": "object",
+                      "title": "section to define the visual size of the electronic signature",
+                      "additionalProperties": false,
+                      "properties": {
+                        "text": {
+                          "type": "string",
+                          "title": "The text that will be displayed on the signature. Supports the following placeholders: {{date}}, {{time}},  {{datetime}} with optional format {{date | dd.MM.yyyy}}, {{time | HH:mm:ss}}, {{datetime | yy-MM-DDTHH:mm}}",
+                          "example": "Signed by fidentity (this is the default if no custom text is passed)"
+                        },
+                        "image": {
+                          "type": "string",
+                          "title": "The base64 encoded image as Data Url (data:[<mediatype>][;base64],<data>) that will be displayed on the signature. Encoded, it should be no larger than 200Kb. Will be resized to fit the signature box. If you want the handwritten Signature as the visual Signature, you must pass an empty string and add the HandwrittenSignature Step to the processSteps array",
+                          "example": "data:[<mediatype>][;base64],<data>"
+                        },
+                        "boxSize": {
+                          "type": "object",
+                          "title": "Total size of the visual signature box, containing the signature text and the image (in user space units = inches*72. For example: 1 inch = 2.54 cm = 72 user space units)",
+                          "additionalProperties": false,
+                          "properties": {
+                            "width": {
+                              "type": "number",
+                              "title": "Width of the signature box"
+                            },
+                            "height": {
+                              "type": "number",
+                              "title": "Height of the signature box"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signatureType": {
+                      "type": "string",
+                      "title": "Type of the signature, only relevant for QES case. Either 'sign' the document with QES or only 'seal' it. Useful for accompanying documents like 'terms and conditions' documents.",
+                      "default": "sign",
+                      "example": "sign",
+                      "enum": [
+                        "sign",
+                        "seal"
+                      ]
+                    }
+                  },
+                  "examples": [
+                    {
+                      "id": "37283719273",
+                      "type": "signature",
+                      "data": "<base 64 string>",
+                      "signature_position": {
+                        "x": 60,
+                        "y": 100,
+                        "page": 0
+                      },
+                      "visualSignature": {
+                        "text": "Signed by fidentity",
+                        "image": "<base 64 string>",
+                        "boxSize": {
+                          "width": 300,
+                          "height": 50
+                        }
+                      }
+                    },
+                    {
+                      "id": "37283719273",
+                      "type": "signature",
+                      "data": "<base 64 string>",
+                      "signature_position": {
+                        "placeholder": "Signature-0001"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {}
+          },
+          "401": {
+            "description": "not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "401",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "404",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "500": {
+            "description": "general error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "500",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          }
+        }
+      }
+    },
+    "/dms/{processId}/{documentId}/visual-signature": {
+      "get": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "processId",
+            "in": "path",
+            "description": "Unique ID for the process.",
+            "example": "as34-33fds232-process",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "documentId",
+            "in": "path",
+            "description": "Unique ID for the document.",
+            "example": "document-adsdsd232-sdsd34",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "dms"
+        ],
+        "summary": "Get visual-signature for document",
+        "description": "Get visual-signature for a document",
+        "operationId": "getVisualSignature",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "section to define the visual size of the electronic signature",
+                  "additionalProperties": false,
+                  "required": [
+                    "image",
+                    "boxSize",
+                    "position"
+                  ],
+                  "properties": {
+                    "image": {
+                      "type": "string",
+                      "title": "The base64 encoded image as Data Url mediatype=jpeg that will be displayed on the signature. Encoded, it should be no larger than 200Kb. Will be resized to fit the signature box",
+                      "example": "data:[<mediatype>][;base64],<data>"
+                    },
+                    "placeholderImage": {
+                      "type": "string",
+                      "title": "The base64 encoded image as Data Url mediatype=jpeg that will be displayed on the signature. Encoded, it should be no larger than 200Kb. Will be resized to fit the signature box",
+                      "example": "data:[<mediatype>][;base64],<data>"
+                    },
+                    "boxSize": {
+                      "type": "number",
+                      "title": "Total width of the visual signature box, containing the signature image (in user space units = inches*72. For example: 1 inch = 2.54 cm = 72 user space units)",
+                      "minimum": 0,
+                      "maximum": 1125
+                    },
+                    "position": {
+                      "type": "object",
+                      "title": "section to position the electronic signature",
+                      "additionalProperties": false,
+                      "required": [
+                        "x",
+                        "y",
+                        "page"
+                      ],
+                      "properties": {
+                        "x": {
+                          "type": "number",
+                          "title": "The x position from the left in user space units (distance in inch*72)",
+                          "minimum": 0,
+                          "maximum": 1125,
+                          "example": 120
+                        },
+                        "y": {
+                          "type": "number",
+                          "title": "The y position from the top in user space units (distance in inch*72)",
+                          "minimum": 0,
+                          "maximum": 2436,
+                          "example": 60
+                        },
+                        "page": {
+                          "type": "number",
+                          "title": "The page index, starting at 0 for first page",
+                          "minimum": 0,
+                          "maximum": 100,
+                          "example": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "401",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "404",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "500": {
+            "description": "general error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "500",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          }
+        }
+      }
+    },
+    "/identification/{passkeyUsername}": {
+      "get": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "passkeyUsername",
+            "in": "path",
+            "description": "A unique customer id, given by as parameter \"passkeyUsername\" when creating new fidentity process.",
+            "example": "max-muster-92f7c8248d0bee8a",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "identification"
+        ],
+        "summary": "Get the user's identification information",
+        "description": "Get the user's identification information",
+        "operationId": "getIdentification",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "section to define the visual size of the electronic signature",
+                  "additionalProperties": false,
+                  "required": [
+                    "passkeyUsername",
+                    "identificationExtId",
+                    "createdAt",
+                    "expirationDate"
+                  ],
+                  "properties": {
+                    "passkeyUsername": {
+                      "type": "string",
+                      "title": "passkeyUsername of the user",
+                      "example": "max-muster-92f7c8248d0bee8a"
+                    },
+                    "identificationExtId": {
+                      "type": "string",
+                      "title": "ExtId of the process where the user was identified",
+                      "example": "6edaf5de-8039-40d3-be43-d322df752699"
+                    },
+                    "createdAt": {
+                      "type": "date",
+                      "title": "Date when the user was identified",
+                      "example": "2024-03-18T10:45:00.646Z"
+                    },
+                    "expirationDate": {
+                      "type": "date",
+                      "title": "Date when the identification expires",
+                      "example": "2027-03-18T10:45:00.000Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "401",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "404",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "500": {
+            "description": "general error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "500",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          }
+        }
+      }
+    },
+    "/report": {
+      "get": {
+        "security": [
+          {
+            "jwt": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "example": "2022-06-01",
+                    "pattern": "^([\\d\\-ZT:\\.]*)$",
+                    "format": "date-time"
+                  },
+                  "to": {
+                    "type": "string",
+                    "example": "2022-06-01",
+                    "pattern": "^([\\d\\-ZT:\\.]*)$",
+                    "format": "date-time"
+                  },
+                  "query": {
+                    "type": "string",
+                    "example": "qes"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "report"
+        ],
+        "summary": "Get reporting data",
+        "description": "Get reporting data",
+        "operationId": "getReport",
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": true,
+                    "properties": {
+                      "ExtId": {
+                        "type": "string",
+                        "example": "as34-33fds232-process"
+                      },
+                      "IdType": {
+                        "type": "string",
+                        "example": "ID_CARD"
+                      },
+                      "Nationality": {
+                        "type": "string",
+                        "example": "CHE"
+                      },
+                      "Case": {
+                        "type": "string",
+                        "example": "qes"
+                      },
+                      "ErstellungsDatum": {
+                        "type": "string",
+                        "example": "2024-11-26T15:19:20.197Z"
+                      },
+                      "ErstellungsZeit": {
+                        "type": "string",
+                        "example": "2024-11-26T15:19:20.197Z"
+                      },
+                      "LetzteAenderungDatum": {
+                        "type": "string",
+                        "example": "2024-11-26T15:19:31.015Z"
+                      },
+                      "LetzteAenderungZeit": {
+                        "type": "string",
+                        "example": "2024-11-26T15:19:31.015Z"
+                      },
+                      "Status": {
+                        "type": "string",
+                        "example": "processed"
+                      },
+                      "Gesamtscore": {
+                        "type": "string",
+                        "example": 0
+                      },
+                      "Rescans": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "IdKey": {
+                        "type": "string",
+                        "example": "as34-33fds232-paskey"
+                      },
+                      "billing-ident-non-qes": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "billing-ident-qes": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "billing-signature-qes": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "billing-signature-fes": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "billing-pep-check": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "billing-address-check": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "billing-nfc-check": {
+                        "type": "number",
+                        "example": 1
+                      },
+                      "billing-agent-review": {
+                        "type": "number",
+                        "example": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "not authenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "401",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "404": {
+            "description": "not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "404",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          },
+          "500": {
+            "description": "general error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Error object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number",
+                      "example": "500",
+                      "description": "http status code"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "error timestamp"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "the path of the request"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "error message"
+                    },
+                    "method": {
+                      "type": "string",
+                      "description": "used Method"
+                    }
+                  }
+                }
+              },
+              "text/html": {}
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "authentication": {
+        "type": "object",
+        "required": [
+          "clientId",
+          "clientSecret"
+        ],
+        "properties": {
+          "strategy": {
+            "type": "string",
+            "enum": [
+              "local"
+            ],
+            "description": "The authentication strategy. Now this value is used with the default value only."
+          },
+          "clientId": {
+            "description": "The id of the client. This id is issued by fidentity.",
+            "type": "string"
+          },
+          "clientSecret": {
+            "description": "The password which belongs to the clientId. The password is issued by fidentity.",
+            "type": "string"
+          }
+        }
+      },
+      "fidentity": {
+        "type": "object",
+        "title": "fidentity output",
+        "required": [
+          "extId",
+          "customer",
+          "mediaUris",
+          "verification"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "extId": {
+            "$ref": "#/components/schemas/extId"
+          },
+          "lang": {
+            "type": "string",
+            "title": "The customers language",
+            "default": "de",
+            "example": "de",
+            "maxLength": 2
+          },
+          "customer": {
+            "type": "object",
+            "title": "customer data section",
+            "required": [],
+            "additionalProperties": false,
+            "properties": {
+              "title": {
+                "$ref": "#/components/schemas/processedValue"
+              },
+              "name": {
+                "$ref": "#/components/schemas/processedValue"
+              },
+              "firstname": {
+                "$ref": "#/components/schemas/processedValue"
+              },
+              "middlename": {
+                "$ref": "#/components/schemas/processedValue"
+              },
+              "nationality": {
+                "$ref": "#/components/schemas/processedValue"
+              },
+              "permit": {
+                "$ref": "#/components/schemas/processedValue"
+              },
+              "dateOfBirth": {
+                "$ref": "#/components/schemas/processedValue"
+              },
+              "residencePermit": {
+                "type": "boolean",
+                "title": "residencePermit - deprecated",
+                "example": false
+              },
+              "entrydate": {
+                "$ref": "#/components/schemas/processedValue"
+              },
+              "birthplace": {
+                "$ref": "#/components/schemas/processedValue"
+              },
+              "mobile": {
+                "type": "string",
+                "title": "Mobile number of the customer",
+                "example": "+41798887766",
+                "pattern": "^(\\+\\d{10,15})?$"
+              },
+              "email": {
+                "type": "string",
+                "title": "Email address of the customer",
+                "example": "john.doe@test.ch",
+                "pattern": "^[^@]+@[^@]+.[^@]+$"
+              },
+              "id": {
+                "type": "object",
+                "title": "The Id",
+                "required": [
+                  "type",
+                  "number",
+                  "issuingCountry"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "title": "id typ",
+                    "example": "chid"
+                  },
+                  "number": {
+                    "type": "object",
+                    "title": "id number",
+                    "required": [
+                      "idValue",
+                      "quality"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "idValue": {
+                        "type": "string",
+                        "title": "The Idvalue",
+                        "example": "C4732987489",
+                        "pattern": "^(.*)$"
+                      },
+                      "quality": {
+                        "$ref": "#/components/schemas/quality"
+                      },
+                      "score": {
+                        "$ref": "#/components/schemas/score"
+                      }
+                    }
+                  },
+                  "issuingCountry": {
+                    "type": "object",
+                    "title": "The Issuingcountry",
+                    "required": [
+                      "idValue",
+                      "quality"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "idValue": {
+                        "type": "string",
+                        "title": "The Idvalue",
+                        "example": "XHE",
+                        "pattern": "^(.*)$"
+                      },
+                      "quality": {
+                        "$ref": "#/components/schemas/quality"
+                      },
+                      "score": {
+                        "$ref": "#/components/schemas/score"
+                      }
+                    }
+                  },
+                  "issuingAuthority": {
+                    "$ref": "#/components/schemas/processedValue"
+                  },
+                  "issuingDate": {
+                    "$ref": "#/components/schemas/processedValue"
+                  },
+                  "expiryDate": {
+                    "type": "object",
+                    "title": "The expiryDate",
+                    "required": [
+                      "idValue",
+                      "quality"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "idValue": {
+                        "type": "string",
+                        "title": "The Idvalue",
+                        "example": "140613"
+                      },
+                      "quality": {
+                        "$ref": "#/components/schemas/quality"
+                      },
+                      "score": {
+                        "$ref": "#/components/schemas/score"
+                      }
+                    }
+                  }
+                }
+              },
+              "address": {
+                "type": "object",
+                "title": "validated address of the customer",
+                "required": [
+                  "score",
+                  "quality",
+                  "streetName",
+                  "townName",
+                  "zipCode"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "score": {
+                    "$ref": "#/components/schemas/score"
+                  },
+                  "quality": {
+                    "$ref": "#/components/schemas/quality"
+                  },
+                  "streetName": {
+                    "type": "string",
+                    "title": "street, validated address of the customer",
+                    "example": "Hauptstrasse"
+                  },
+                  "townName": {
+                    "type": "string",
+                    "title": "townName, validated address of the customer",
+                    "example": "Zürich"
+                  },
+                  "zipCode": {
+                    "type": "string",
+                    "title": "zipCode, validated address of the customer",
+                    "example": "6000"
+                  },
+                  "houseNo": {
+                    "type": "string",
+                    "title": "houseNo, validated address of the customer",
+                    "example": "111"
+                  }
+                }
+              },
+              "additionalChecks": {
+                "type": "array",
+                "title": "Additional checks which were done in the review",
+                "items": {
+                  "type": "object",
+                  "title": "Additional check done in the review",
+                  "required": [
+                    "type",
+                    "values"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "title": "type",
+                      "example": "studentCard",
+                      "enum": [
+                        "signatureVisiblePrimaryDoc",
+                        "studentCard",
+                        "fraudCheck"
+                      ]
+                    },
+                    "values": {
+                      "type": "object",
+                      "title": "Values of the check",
+                      "required": [
+                        "decision",
+                        "reviewedAt",
+                        "reviewer"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "decision": {
+                          "type": "string",
+                          "title": "decision",
+                          "example": "ok",
+                          "enum": [
+                            "ok",
+                            "nok",
+                            "-"
+                          ]
+                        },
+                        "reviewedAt": {
+                          "type": "string",
+                          "title": "reviewedAt",
+                          "example": "2017-12-22T17:46:21.035Z",
+                          "pattern": "^([\\d\\-ZT:\\.]*)$",
+                          "format": "date-time"
+                        },
+                        "reviewer": {
+                          "type": "string",
+                          "title": "reviewer",
+                          "example": "max.reviwer.mustermann"
+                        },
+                        "reviewComment": {
+                          "type": "string",
+                          "title": "Review comment",
+                          "example": "Documents successfully verified"
+                        },
+                        "validFrom": {
+                          "type": "string",
+                          "title": "valid from",
+                          "example": "2001-12-10",
+                          "pattern": "^(\\d{4}-\\d{2}-\\d{2})?$",
+                          "maxLength": 10
+                        },
+                        "validTo": {
+                          "type": "string",
+                          "title": "valid from",
+                          "example": "2011-12-10",
+                          "pattern": "^(\\d{4}-\\d{2}-\\d{2})?$",
+                          "maxLength": 10
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "customData": {
+            "type": "object",
+            "title": "optional custom data section for data that was gatherd during the process, in key-value pairs",
+            "additionalProperties": true
+          },
+          "qesConfig": {
+            "type": "object",
+            "title": "QES configuration overrides per process",
+            "additionalProperties": false,
+            "properties": {
+              "verificationType": {
+                "type": "string",
+                "title": "The verification type for the QES process. If not provided, the tenant default is used.",
+                "example": "reviewonly",
+                "enum": [
+                  "reviewonly",
+                  "hybrid",
+                  "nfconly"
+                ],
+                "maxLength": 10
+              },
+              "certificateType": {
+                "type": "string",
+                "title": "The certificate type for the QES process. If not provided, the tenant default is used.",
+                "example": "eidas",
+                "enum": [
+                  "zertes",
+                  "eidas"
+                ],
+                "maxLength": 6
+              }
+            }
+          },
+          "case": {
+            "type": "string",
+            "title": "Qualifier to define the case that should be used. For QES, this field is deprecated (use process steps instead).",
+            "example": "onlineid",
+            "maxLength": 100,
+            "deprecated": true,
+            "x-comment": "Used for example by bank avera. But DEPRECATED for QES, use processSteps field instead."
+          },
+          "processSteps": {
+            "type": "array",
+            "title": "The sequence of the fidentity process steps that were planned.",
+            "items": {
+              "$ref": "#/components/schemas/processStepOut"
+            }
+          },
+          "documentUris": {
+            "$ref": "#/components/schemas/documentUris"
+          },
+          "mediaUris": {
+            "$ref": "#/components/schemas/mediaUris"
+          },
+          "signedHashes": {
+            "type": "array",
+            "title": "section for hashes that are signed electronically",
+            "items": {
+              "$ref": "#/components/schemas/signedHash"
+            }
+          },
+          "verification": {
+            "required": [
+              "score",
+              "state",
+              "log",
+              "createdAt"
+            ],
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "score": {
+                "$ref": "#/components/schemas/score"
+              },
+              "quality": {
+                "$ref": "#/components/schemas/quality"
+              },
+              "decision": {
+                "$ref": "#/components/schemas/decision"
+              },
+              "state": {
+                "$ref": "#/components/schemas/state"
+              },
+              "log": {
+                "$ref": "#/components/schemas/log"
+              },
+              "createdAt": {
+                "type": "string",
+                "title": "Erstellungsdatum",
+                "example": "2017-12-22T17:46:21.035Z",
+                "pattern": "^([\\d\\-ZT:\\.]*)$",
+                "format": "date-time"
+              },
+              "checkpoints": {
+                "$ref": "#/components/schemas/checkpoints"
+              },
+              "cancelReason": {
+                "type": "string",
+                "title": "Reason why the process was cancelled (e.g. blocked because user was underage or fraud detected during review). Examples: MAXRESCANREACHED, UNDERAGE, INVALIDCOUNTRY, FRAUDDETECTEDBYREVIEW",
+                "example": "FRAUDDETECTEDBYREVIEW"
+              },
+              "retries": {
+                "type": "number",
+                "title": "Number of retries",
+                "example": 0
+              },
+              "pep": {
+                "type": "object",
+                "title": "pep check",
+                "properties": {
+                  "dateofbirth": {
+                    "type": "string",
+                    "title": "dateofbirth"
+                  },
+                  "name": {
+                    "type": "object",
+                    "title": "name",
+                    "properties": {
+                      "given": {
+                        "type": "string",
+                        "title": "given",
+                        "example": "John"
+                      },
+                      "family": {
+                        "type": "string",
+                        "title": "family",
+                        "example": "Doe"
+                      }
+                    }
+                  },
+                  "reference": {
+                    "type": "string",
+                    "title": "reference",
+                    "example": "1234567890"
+                  },
+                  "verificationSuccess": {
+                    "type": "boolean",
+                    "title": "verificationSuccess",
+                    "example": true
+                  },
+                  "validated": {
+                    "type": "object",
+                    "title": "validated",
+                    "properties": {
+                      "dateofbirth": {
+                        "type": "boolean",
+                        "title": "dateofbirth",
+                        "example": true
+                      },
+                      "address": {
+                        "type": "boolean",
+                        "title": "address",
+                        "example": true
+                      },
+                      "pepMatched": {
+                        "type": "boolean",
+                        "title": "pepMatched",
+                        "example": true
+                      },
+                      "name": {
+                        "type": "boolean",
+                        "title": "name",
+                        "example": true
+                      }
+                    }
+                  },
+                  "sources": {
+                    "type": "array",
+                    "title": "sources",
+                    "items": {
+                      "type": "object",
+                      "title": "source",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "title": "success",
+                          "example": true
+                        },
+                        "name": {
+                          "type": "string",
+                          "title": "name"
+                        }
+                      }
+                    }
+                  },
+                  "pepMatches": {
+                    "type": "array",
+                    "title": "pepMatches",
+                    "items": {
+                      "type": "object",
+                      "title": "pepMatch",
+                      "properties": {
+                        "score": {
+                          "type": "number",
+                          "title": "score",
+                          "example": 0.5
+                        },
+                        "peid": {
+                          "type": "number",
+                          "title": "peid",
+                          "example": 123
+                        },
+                        "name": {
+                          "type": "string",
+                          "title": "name",
+                          "example": "John Doe"
+                        },
+                        "riskTypes": {
+                          "type": "array",
+                          "title": "riskTypes",
+                          "items": {
+                            "type": "string",
+                            "title": "riskType",
+                            "example": "PEP"
+                          }
+                        },
+                        "dateOfBirth": {
+                          "type": "array",
+                          "title": "dateOfBirth",
+                          "items": {
+                            "type": "string",
+                            "title": "dateOfBirth",
+                            "example": "1980-01-01"
+                          }
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "title",
+                          "example": "Dr."
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "compliances": {
+                "type": "array",
+                "title": "list of compliances the process fulfills (identifying assessments)",
+                "items": {
+                  "$ref": "#/components/schemas/compliance"
+                }
+              }
+            }
+          },
+          "expectedDeleteDate": {
+            "type": "string",
+            "title": "expected date of deletion",
+            "example": "2017-12-22T17:46:21.035Z",
+            "pattern": "^([\\d\\-ZT:\\.\\+]*)$",
+            "format": "date-time"
+          },
+          "reviews": {
+            "type": "array",
+            "title": "Review Log",
+            "default": [],
+            "items": {
+              "type": "object",
+              "title": "review entry",
+              "properties": {
+                "decision": {
+                  "type": "string",
+                  "title": "decision",
+                  "example": "ok",
+                  "enum": [
+                    "ok",
+                    "warn",
+                    "nok"
+                  ]
+                },
+                "reviewedAt": {
+                  "type": "string",
+                  "title": "reviewedAt",
+                  "example": "2017-12-22T17:46:21.035Z",
+                  "pattern": "^([\\d\\-ZT:\\.]*)$",
+                  "format": "date-time"
+                },
+                "reviewer": {
+                  "type": "string",
+                  "title": "reviewer",
+                  "example": "my reviewer"
+                },
+                "qesChecks": {
+                  "type": "object",
+                  "title": "QES Checks",
+                  "required": [
+                    "documentAuthenticity",
+                    "personAuthenticity",
+                    "personMatch"
+                  ],
+                  "properties": {
+                    "documentAuthenticity": {
+                      "type": "object",
+                      "title": "Document Authenticity",
+                      "required": [
+                        "decision",
+                        "problems"
+                      ],
+                      "properties": {
+                        "decision": {
+                          "type": "string",
+                          "title": "Decision",
+                          "example": "nok",
+                          "enum": [
+                            "ok",
+                            "nok"
+                          ]
+                        },
+                        "problems": {
+                          "type": "array",
+                          "title": "Problems",
+                          "items": {
+                            "type": "string",
+                            "example": "DOC_BAD_QUALITY"
+                          }
+                        }
+                      }
+                    },
+                    "personAuthenticity": {
+                      "type": "object",
+                      "title": "Person Authenticity",
+                      "required": [
+                        "decision",
+                        "problems"
+                      ],
+                      "properties": {
+                        "decision": {
+                          "type": "string",
+                          "title": "Decision",
+                          "example": "ok",
+                          "enum": [
+                            "ok",
+                            "nok"
+                          ]
+                        },
+                        "problems": {
+                          "type": "array",
+                          "title": "Problems",
+                          "items": {
+                            "type": "string",
+                            "example": "PERS_TECHNICAL_ISSUE"
+                          }
+                        }
+                      }
+                    },
+                    "personMatch": {
+                      "type": "object",
+                      "title": "Person Match",
+                      "required": [
+                        "decision",
+                        "problems"
+                      ],
+                      "properties": {
+                        "decision": {
+                          "type": "string",
+                          "title": "Decision",
+                          "example": "ok",
+                          "enum": [
+                            "ok",
+                            "nok"
+                          ]
+                        },
+                        "problems": {
+                          "type": "array",
+                          "title": "Problems",
+                          "items": {
+                            "type": "string",
+                            "example": "PM_SUS_FRAUD_IMPERSONATION"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "additionalChecks": {
+                  "type": "object",
+                  "title": "Additional Checks",
+                  "properties": {
+                    "residecncePermit": {
+                      "type": "object",
+                      "title": "Residecnce Permit",
+                      "required": [
+                        "decision",
+                        "problems"
+                      ],
+                      "properties": {
+                        "decision": {
+                          "type": "string",
+                          "title": "Decision",
+                          "example": "ok",
+                          "enum": [
+                            "ok",
+                            "nok"
+                          ]
+                        },
+                        "problems": {
+                          "type": "array",
+                          "title": "Problems",
+                          "items": {
+                            "type": "string",
+                            "example": ""
+                          }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "type": "object",
+                      "title": "Signature",
+                      "required": [
+                        "decision",
+                        "problems"
+                      ],
+                      "properties": {
+                        "decision": {
+                          "type": "string",
+                          "title": "Decision",
+                          "example": "ok",
+                          "enum": [
+                            "ok",
+                            "nok"
+                          ]
+                        },
+                        "problems": {
+                          "type": "array",
+                          "title": "Problems",
+                          "items": {
+                            "type": "string",
+                            "example": ""
+                          }
+                        }
+                      }
+                    },
+                    "idValues": {
+                      "type": "object",
+                      "title": "Id document values",
+                      "required": [
+                        "decision",
+                        "problems"
+                      ],
+                      "properties": {
+                        "decision": {
+                          "type": "string",
+                          "title": "Decision",
+                          "example": "ok",
+                          "enum": [
+                            "ok",
+                            "nok"
+                          ]
+                        },
+                        "problems": {
+                          "type": "array",
+                          "title": "Problems",
+                          "items": {
+                            "type": "string",
+                            "example": ""
+                          }
+                        }
+                      }
+                    },
+                    "fraud": {
+                      "type": "object",
+                      "title": "Fraud",
+                      "required": [
+                        "decision",
+                        "problems"
+                      ],
+                      "properties": {
+                        "decision": {
+                          "type": "string",
+                          "title": "Decision",
+                          "example": "ok",
+                          "enum": [
+                            "ok",
+                            "nok"
+                          ]
+                        },
+                        "problems": {
+                          "type": "array",
+                          "title": "Problems",
+                          "items": {
+                            "type": "string",
+                            "example": ""
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "x-comment": {
+                  "type": "string",
+                  "title": "comment",
+                  "example": "my comment"
+                }
+              }
+            }
+          }
+        },
+        "x-$schema": "https://json-schema.org/draft/2020-12/schema#",
+        "x-$id": "http://example.com/root.json"
+      },
+      "input": {
+        "type": "object",
+        "title": "fidentity input schema",
+        "required": [
+          "extId",
+          "customer"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "extId": {
+            "type": "string",
+            "title": "Unique ID for this process.",
+            "example": "as34-33fds232-adsdsd232-sdsd34",
+            "pattern": "^[A-Za-z0-9-.]{10,60}$",
+            "maxLength": 60,
+            "minLength": 10
+          },
+          "lang": {
+            "type": "string",
+            "title": "The customers language",
+            "default": "de",
+            "example": "de",
+            "maxLength": 2
+          },
+          "qesConfig": {
+            "type": "object",
+            "title": "QES configuration overrides per process",
+            "additionalProperties": false,
+            "properties": {
+              "verificationType": {
+                "type": "string",
+                "title": "The verification type for the QES process. If not provided, the tenant default is used.",
+                "example": "reviewonly",
+                "enum": [
+                  "reviewonly",
+                  "hybrid",
+                  "nfconly"
+                ],
+                "maxLength": 10
+              },
+              "certificateType": {
+                "type": "string",
+                "title": "The certificate type for the QES process. If not provided, the tenant default is used.",
+                "example": "eidas",
+                "enum": [
+                  "zertes",
+                  "eidas"
+                ],
+                "maxLength": 6
+              }
+            }
+          },
+          "customer": {
+            "type": "object",
+            "title": "customer data section",
+            "required": [],
+            "properties": {
+              "title": {
+                "type": "string",
+                "title": "customer salutation",
+                "example": "Herr",
+                "pattern": "^(Herr|Frau)?$",
+                "maxLength": 5
+              },
+              "name": {
+                "type": "string",
+                "title": "the surname of the customer",
+                "example": "Mueller",
+                "maxLength": 60
+              },
+              "firstname": {
+                "type": "string",
+                "title": "The firstname of the customer",
+                "example": "Heidi",
+                "maxLength": 60
+              },
+              "middlename": {
+                "type": "string",
+                "title": "The middlename of the customer",
+                "example": "Peter",
+                "maxLength": 60
+              },
+              "nationality": {
+                "type": "string",
+                "title": "The nationality of the customer (ISO Code). This field defines which legal documents are shown to the customer. The allowed countries are defined individually when creating the projects",
+                "enum": [
+                  "ARE",
+                  "ARG",
+                  "AUS",
+                  "AUT",
+                  "BEL",
+                  "BGR",
+                  "BIH",
+                  "BRA",
+                  "CAN",
+                  "CHE",
+                  "CHL",
+                  "CHN",
+                  "CPV",
+                  "CUW",
+                  "CYP",
+                  "CZE",
+                  "DEU",
+                  "DNK",
+                  "ECU",
+                  "EGY",
+                  "ERI",
+                  "ESP",
+                  "EST",
+                  "FIN",
+                  "FRA",
+                  "FRO",
+                  "GBR",
+                  "GEO",
+                  "GHA",
+                  "GRC",
+                  "GRL",
+                  "HKG",
+                  "HRV",
+                  "HUN",
+                  "IND",
+                  "IRL",
+                  "IRN",
+                  "ISL",
+                  "ISR",
+                  "ITA",
+                  "JPN",
+                  "KOS",
+                  "LBN",
+                  "LIE",
+                  "LTU",
+                  "LUX",
+                  "LVA",
+                  "MAR",
+                  "MEX",
+                  "MKD",
+                  "MLD",
+                  "MLT",
+                  "MUS",
+                  "MYS",
+                  "NLD",
+                  "NOR",
+                  "NZL",
+                  "NPL",
+                  "OMN",
+                  "PAK",
+                  "PAN",
+                  "PER",
+                  "PHL",
+                  "POL",
+                  "PRT",
+                  "RKS",
+                  "ROU",
+                  "RUS",
+                  "SAU",
+                  "SGP",
+                  "SRB",
+                  "SVK",
+                  "SVN",
+                  "SWE",
+                  "SYR",
+                  "THA",
+                  "TUN",
+                  "TUR",
+                  "TWN",
+                  "UKR",
+                  "URY",
+                  "USA",
+                  "VEN",
+                  "VNM",
+                  "ZAF",
+                  "ALB",
+                  "BGD",
+                  "BHR",
+                  "BLR",
+                  "CMR",
+                  "COL",
+                  "CUB",
+                  "DZA",
+                  "ETH",
+                  "IDN",
+                  "KAZ",
+                  "KEN",
+                  "KOR",
+                  "MNE",
+                  "NGA",
+                  "SEN",
+                  "TGO",
+                  "XXK"
+                ]
+              },
+              "permit": {
+                "type": "string",
+                "title": "The swiss residence permit of the customer",
+                "example": "C",
+                "pattern": "^(L|B|C|Ci|G|F|N|S)?$",
+                "maxLength": 2
+              },
+              "dateOfBirth": {
+                "type": "string",
+                "title": "Date of birth of the customer",
+                "example": "2000-01-01",
+                "pattern": "^(\\d{4}-\\d{2}-\\d{2})?$",
+                "maxLength": 10
+              },
+              "mobile": {
+                "type": "string",
+                "title": "Mobile number of the customer",
+                "example": "+41798887766",
+                "pattern": "^(\\+\\d{10,15})?$"
+              },
+              "email": {
+                "type": "string",
+                "title": "Email address of the customer",
+                "example": "john.doe@test.ch",
+                "pattern": "^[^@]+@[^@]+.[^@]+$"
+              },
+              "idType": {
+                "type": "string",
+                "title": "The type of the legal document. If provided this will be used for the validation",
+                "example": "ID_CARD",
+                "enum": [
+                  "ID_CARD",
+                  "PASSPORT",
+                  "DRIVING_LICENSE",
+                  "RESIDENCE_PERMIT"
+                ]
+              },
+              "idIssuingCountry": {
+                "type": "string",
+                "title": "ISO 3166-1 alpha-3 country code of issuing country of the ID document. If provided this will be used for the validation",
+                "example": "CHE",
+                "pattern": "^[A-Z]{3}$",
+                "maxLength": 3
+              },
+              "countryOfResidence": {
+                "type": "string",
+                "title": "ISO 3166-1 alpha-3 country code of residence country",
+                "example": "CHE",
+                "pattern": "^[A-Z]{3}$",
+                "maxLength": 3
+              },
+              "residencePermit": {
+                "type": "boolean",
+                "title": "Flag to indicate if the residence permit needs to be checked.",
+                "default": false,
+                "deprecated": true,
+                "x-comment": "DEPRECATED, is configured on tenant"
+              },
+              "address": {
+                "type": "object",
+                "title": "address of the customer",
+                "required": [
+                  "checkAddress",
+                  "streetName",
+                  "townName",
+                  "zipCode"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "checkAddress": {
+                    "type": "boolean",
+                    "title": "Flag to indicate if the address of the customer needs to be checked.",
+                    "default": false
+                  },
+                  "streetName": {
+                    "type": "string",
+                    "title": "street, address of the customer",
+                    "example": "Hauptstrasse"
+                  },
+                  "townName": {
+                    "type": "string",
+                    "title": "townName, address of the customer",
+                    "example": "Zürich"
+                  },
+                  "zipCode": {
+                    "type": "string",
+                    "title": "zipCode, address of the customer",
+                    "example": "6000"
+                  },
+                  "houseNo": {
+                    "type": "string",
+                    "title": "houseNo, address of the customer",
+                    "example": "111"
+                  }
+                }
+              }
+            }
+          },
+          "passkeyUsername": {
+            "type": "string",
+            "title": "A unique customer id which will be used as passkey (e.g. Webauthn) for signing. If it is empty, a passkey from firstname, lastname and date of birth will be generated or as fallback the email or extId is used.",
+            "example": "UniqueUserId-1234",
+            "pattern": "^[A-Za-z0-9-.]{10,60}$",
+            "maxLength": 60,
+            "minLength": 10,
+            "x-comment": "Hint: the user can see this key on the screen."
+          },
+          "visitorId": {
+            "type": "string",
+            "title": "Unique user identifier",
+            "example": "6d1c32df-1ead-4851-ac6a-dcdc825c1003",
+            "maxLength": 60,
+            "minLength": 10
+          },
+          "case": {
+            "type": "string",
+            "title": "Qualifier to define the case that should be used. For QES, this field is deprecated (use process steps instead).",
+            "example": "onlineid",
+            "maxLength": 100,
+            "deprecated": true,
+            "x-comment": "Used for example by bank avera. But DEPRECATED for QES, use processSteps field instead."
+          },
+          "processSteps": {
+            "type": "array",
+            "title": "The sequence of the fidentity process steps can be specified individually.",
+            "items": {
+              "$ref": "#/components/schemas/processStep"
+            }
+          },
+          "noValidation": {
+            "type": "boolean",
+            "title": "Defines if the process is blocked when validation fails\n            noValidation = true > process is not blocked\n            noValidation = false > process is blocked\n            ",
+            "default": false
+          },
+          "showCloseTabMessageAfterNFC": {
+            "type": "boolean",
+            "title": "Flag that defines if a message to close the browser tab should be shown after NFC scanning. Only relevant if the process is started on mobile.",
+            "default": false
+          },
+          "selfie": {
+            "type": "boolean",
+            "title": "Flag that defines if selfie process should be used. This field is deprecated. Use process steps instead.",
+            "default": false,
+            "deprecated": true,
+            "x-comment": "DEPRECATED, use processSteps field instead"
+          },
+          "systemUrls": {
+            "$ref": "#/components/schemas/systemUrls"
+          },
+          "documentUris": {
+            "$ref": "#/components/schemas/inputDocuments"
+          },
+          "hashesToSign": {
+            "$ref": "#/components/schemas/hashesToSign"
+          }
+        },
+        "x-$schema": "https://json-schema.org/draft/2020-12/schema#"
+      },
+      "checkpoints": {
+        "type": "object",
+        "title": "Verification checkpoints",
+        "properties": {
+          "selfie": {
+            "$ref": "#/components/schemas/verificationScore"
+          },
+          "docscan": {
+            "$ref": "#/components/schemas/verificationScore"
+          },
+          "liveness": {
+            "$ref": "#/components/schemas/verificationScore"
+          },
+          "idselfie": {
+            "$ref": "#/components/schemas/verificationScore"
+          },
+          "mrz": {
+            "$ref": "#/components/schemas/verificationScore"
+          },
+          "viz": {
+            "$ref": "#/components/schemas/verificationScore"
+          },
+          "layout": {
+            "$ref": "#/components/schemas/verificationScore"
+          },
+          "fraud": {
+            "$ref": "#/components/schemas/verificationScore"
+          },
+          "nfc": {
+            "$ref": "#/components/schemas/verificationScore"
+          },
+          "postalAddress": {
+            "$ref": "#/components/schemas/verificationScore"
+          },
+          "pepCheck": {
+            "$ref": "#/components/schemas/verificationScore"
+          }
+        }
+      },
+      "verificationScore": {
+        "type": "object",
+        "title": "Verification score",
+        "properties": {
+          "score": {
+            "$ref": "#/components/schemas/score"
+          },
+          "quality": {
+            "$ref": "#/components/schemas/quality"
+          },
+          "problem": {
+            "type": "string",
+            "title": "Problem",
+            "example": "not-checked",
+            "enum": [
+              "not-checked",
+              "ignored"
+            ]
+          }
+        }
+      },
+      "signedHash": {
+        "type": "object",
+        "title": "signed hash",
+        "required": [
+          "type",
+          "hash",
+          "id"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "The id of the document",
+            "example": "37283719273"
+          },
+          "type": {
+            "type": "string",
+            "title": "type of document, values are used to distinguish the document types",
+            "default": "signature",
+            "example": "contract"
+          },
+          "title": {
+            "type": "string",
+            "title": "The document title",
+            "example": "Vorsorgevertrag"
+          },
+          "hash": {
+            "type": "string",
+            "title": "The document hash (base64)",
+            "example": "<base 64 string>"
+          },
+          "signature": {
+            "type": "string",
+            "title": "The signature (base64)",
+            "example": "<base 64 string>"
+          },
+          "certificate": {
+            "type": "string",
+            "title": "The public certificate of the signee (base64)",
+            "example": "<base 64 string>"
+          },
+          "cmsObject": {
+            "type": "string",
+            "title": "The signed pkcs7 object (base64)",
+            "example": "<base 64 string>"
+          },
+          "preparedDigest": {
+            "type": "string",
+            "title": "The hash of the pkcs7 object (base64)",
+            "example": "<base 64 string>"
+          }
+        }
+      },
+      "decision": {
+        "required": [
+          "process",
+          "system",
+          "review"
+        ],
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "process": {
+            "type": "string",
+            "title": "The overall status of the process. If no review state is set, then the process state has the value of the system state. If a review state is set, then the process state has the value of the last review state.",
+            "example": "ok",
+            "enum": [
+              "ok",
+              "warn",
+              "nok",
+              "-"
+            ]
+          },
+          "system": {
+            "type": "string",
+            "title": "This value is defined by fidentity based on all process steps and cannot be changed",
+            "example": "ok",
+            "enum": [
+              "ok",
+              "warn",
+              "nok",
+              "-"
+            ]
+          },
+          "review": {
+            "type": "string",
+            "title": "This value is defined manually in the admin gui by a reviewer. The value can be changed several times",
+            "example": "ok",
+            "enum": [
+              "ok",
+              "warn",
+              "nok",
+              "-"
+            ]
+          }
+        }
+      },
+      "state": {
+        "type": "string",
+        "title": "Verarbeitungsstatus",
+        "default": "created",
+        "example": "processed",
+        "enum": [
+          "created",
+          "started",
+          "captured",
+          "verified",
+          "review-pending",
+          "reviewed",
+          "processed",
+          "aborted",
+          "blocked",
+          "expired"
+        ]
+      },
+      "log": {
+        "type": "array",
+        "title": "process validation log. ! to be treaded as log and not to be parsed or validated ! Use verification checkpoints to get overview and scores of validation parts.",
+        "items": {
+          "type": "object",
+          "title": "process validation",
+          "properties": {
+            "type": {
+              "type": "string",
+              "title": "Validierung",
+              "example": "MRZ Validierung"
+            },
+            "score": {
+              "$ref": "#/components/schemas/score"
+            },
+            "quality": {
+              "$ref": "#/components/schemas/quality"
+            }
+          },
+          "example": [
+            {
+              "type": "MRZ Validierung",
+              "quality": true,
+              "score": 0.9
+            }
+          ]
+        }
+      },
+      "compliance": {
+        "type": "object",
+        "title": "assessed compliance",
+        "required": [
+          "label",
+          "assessor"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "name of the assessed conformity",
+            "example": "ZertES Conformity Assessment"
+          },
+          "assessor": {
+            "type": "string",
+            "title": "assessment number, date and company",
+            "example": "No. 207 / 2023 as of 21012023 done by KPMG AG"
+          }
+        }
+      },
+      "mediaUris": {
+        "type": "array",
+        "title": "Media and Document uris",
+        "example": [
+          {
+            "mediatype": "pdf",
+            "uri": "/api/v1/export/5a3d44edc94fb74426cf409d/pdf"
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/mediaUri"
+        }
+      },
+      "mediaUri": {
+        "type": "object",
+        "required": [
+          "mediatype",
+          "uri"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Input document id if available",
+            "example": "5a3d44edc94fb74426cf409d"
+          },
+          "uri": {
+            "type": "string",
+            "title": "The uri",
+            "example": "/api/v1/export/5a3d44edc94fb74426cf409d/pdf"
+          },
+          "mediatype": {
+            "type": "string",
+            "title": "The mediatype",
+            "example": "pdf",
+            "enum": [
+              "report-pdf",
+              "signed-pdf",
+              "ident-pdf",
+              "selfcertification-pdf",
+              "ocr-pdf",
+              "report-json",
+              "video",
+              "image"
+            ]
+          },
+          "tags": {
+            "type": "array",
+            "title": "Tags to differentiate media",
+            "example": "document, selfie, chid, front",
+            "items": {
+              "type": "string",
+              "example": "document"
+            }
+          }
+        }
+      },
+      "documentUris": {
+        "type": "array",
+        "title": "DEPRECATED, use mediaUris instead, Document uris",
+        "deprecated": true,
+        "items": {
+          "$ref": "#/components/schemas/documentUri"
+        },
+        "x-comment": "Use mediaUris instead"
+      },
+      "documentUri": {
+        "type": "string",
+        "title": "Document uri",
+        "example": "/api/v1/export/5a3d44edc94fb74426cf409d/pdf"
+      },
+      "quality": {
+        "type": "string",
+        "title": "The Quality",
+        "default": "-",
+        "example": "ok",
+        "enum": [
+          "ok",
+          "nok",
+          "-"
+        ]
+      },
+      "score": {
+        "title": "The Score",
+        "default": 0,
+        "example": 0.5,
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "processStepOut": {
+        "type": "object",
+        "title": "Process Step",
+        "required": [
+          "type",
+          "state"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "A key for the process step",
+            "example": "37283719273"
+          },
+          "type": {
+            "type": "string",
+            "title": "Defines the module that should be used in this process step.",
+            "example": "DocumentRegistration",
+            "enum": [
+              "Selfie",
+              "DocumentRegistration",
+              "UserReview",
+              "Signature",
+              "Welcome",
+              "PdfScan",
+              "PersonalData",
+              "HandwrittenSignature",
+              "QesSignature",
+              "Info"
+            ],
+            "maxLength": 30
+          },
+          "subtype": {
+            "type": "string",
+            "title": "The subtype of the process step. Use \"nfc\" in case of NFC Chip validation.",
+            "default": "main",
+            "example": "main",
+            "enum": [
+              "main",
+              "nfc",
+              "zoom",
+              "readonly",
+              "identOnly",
+              "signOnly",
+              "singleRun"
+            ],
+            "maxLength": 20
+          },
+          "documentType": {
+            "type": "string",
+            "title": "The document type. Is used for additional document types (e.g. studentCard).",
+            "example": "studentCard",
+            "enum": [
+              "studentCard"
+            ],
+            "maxLength": 20
+          },
+          "state": {
+            "type": "string",
+            "title": "The state for this process step.",
+            "example": "started",
+            "enum": [
+              "created",
+              "completed",
+              "failed",
+              "cancelled",
+              "started",
+              "reset"
+            ],
+            "maxLength": 30
+          }
+        }
+      },
+      "extId": {
+        "type": "string",
+        "title": "Unique ID for this process.",
+        "example": "as34-33fds232-adsdsd232-sdsd34",
+        "pattern": "^[A-Za-z0-9-.]{10,60}$",
+        "maxLength": 60,
+        "minLength": 10
+      },
+      "processedValue": {
+        "type": "object",
+        "required": [
+          "idValue",
+          "score",
+          "quality"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "inputValue": {
+            "type": "string",
+            "title": "The Inputvalue",
+            "pattern": "^(.*)$"
+          },
+          "idValue": {
+            "type": "string",
+            "title": "The Idvalue",
+            "pattern": "^(.*)$"
+          },
+          "verifiedValue": {
+            "type": "string",
+            "title": "Value verified by a review agent",
+            "pattern": "^(.*)$"
+          },
+          "vizValue": {
+            "type": "string",
+            "title": "Value extracted from the VIZ",
+            "pattern": "^(.*)$"
+          },
+          "score": {
+            "$ref": "#/components/schemas/score"
+          },
+          "quality": {
+            "$ref": "#/components/schemas/quality"
+          }
+        }
+      },
+      "processStep": {
+        "type": "object",
+        "title": "Process Step",
+        "required": [
+          "type"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "A key for the process step",
+            "example": "37283719273"
+          },
+          "type": {
+            "type": "string",
+            "title": "Defines the module that should be used in this process step.",
+            "example": "DocumentRegistration",
+            "enum": [
+              "Selfie",
+              "DocumentRegistration",
+              "UserReview",
+              "AgentReview",
+              "QesSignature",
+              "Signature",
+              "Welcome",
+              "PdfScan",
+              "PersonalData",
+              "HandwrittenSignature",
+              "Info"
+            ],
+            "maxLength": 30
+          },
+          "subtype": {
+            "type": "string",
+            "title": "The subtype of the process step. Use \"nfc\" in case of NFC Chip validation.",
+            "default": "main",
+            "example": "main",
+            "enum": [
+              "main",
+              "nfc",
+              "zoom",
+              "readonly",
+              "identOnly",
+              "signOnly",
+              "singleRun",
+              "api"
+            ],
+            "maxLength": 20
+          },
+          "documentType": {
+            "type": "string",
+            "title": "The document type. Is used for additional document types (e.g. studentCard). Can be used in step \"DocumentRegistration\" and \"PdfScan\".",
+            "example": "studentCard",
+            "enum": [
+              "studentCard"
+            ],
+            "maxLength": 20
+          }
+        }
+      },
+      "systemUrls": {
+        "type": "array",
+        "title": "Section to define callbacks or redirect URLs",
+        "items": {
+          "type": "object",
+          "title": "System URL for callbacks and redirects",
+          "required": [
+            "type",
+            "url",
+            "state"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "url": {
+              "type": "string",
+              "title": "url for callback or redirect",
+              "example": "https://fidentity.ch/success/"
+            },
+            "type": {
+              "type": "string",
+              "title": "type of url. Callback url is called after the process is finished. After finishing process user is redirected to redirect url. Review callback url is called after the process is manually reviewed.",
+              "example": "callback",
+              "enum": [
+                "callback",
+                "review-callback",
+                "redirect"
+              ]
+            },
+            "subtype": {
+              "type": "string",
+              "title": "subtype of url. Currently only used for the type 'redirect' and state 'review-pending'",
+              "example": "insideOperatingHours",
+              "enum": [
+                "insideOperatingHours",
+                "outsideOperatingHours"
+              ]
+            },
+            "state": {
+              "type": "string",
+              "title": "defines the status of the process when calling the url",
+              "example": "success",
+              "enum": [
+                "error",
+                "success",
+                "warn",
+                "abort",
+                "session-expired",
+                "started",
+                "review-pending",
+                "reviewed",
+                "qes-signing-started",
+                "qes-identification-done"
+              ]
+            },
+            "template": {
+              "type": "string",
+              "title": "Template to customize a body for a callback request",
+              "example": "{ \"value\": \"{{{reviewUrl}}}\"}"
+            },
+            "headers": {
+              "type": "array",
+              "title": "Additional headers for the callback request",
+              "items": {
+                "type": "object",
+                "title": "Header",
+                "required": [
+                  "key",
+                  "value"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "title": "The key of the header",
+                    "example": "X-Requested-By"
+                  },
+                  "value": {
+                    "type": "string",
+                    "title": "The value of the header",
+                    "example": "Fidentity"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "hashesToSign": {
+        "type": "array",
+        "title": "section for hashes that will be signed electronically",
+        "items": {
+          "$ref": "#/components/schemas/hashToSign"
+        }
+      },
+      "hashToSign": {
+        "type": "object",
+        "title": "Input hash data to sign",
+        "required": [
+          "type",
+          "hash",
+          "id",
+          "title"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "The id of the document",
+            "example": "37283719273"
+          },
+          "type": {
+            "type": "string",
+            "title": "type of document, values are used to distinguish the document types",
+            "default": "signature",
+            "example": "contract"
+          },
+          "title": {
+            "type": "string",
+            "title": "The document title",
+            "example": "Vorsorgevertrag"
+          },
+          "hash": {
+            "type": "string",
+            "title": "The document hash (Hex) to sign",
+            "example": "<base 64 string>"
+          },
+          "hashAlgorithm": {
+            "type": "string",
+            "title": "The hash algoritm used to create the document hash",
+            "enum": [
+              "sha256",
+              "sha512"
+            ],
+            "default": "sha256",
+            "example": "sha256"
+          },
+          "signedAttrs": {
+            "type": "string",
+            "title": "The document signedAttrs (Base64) to sign",
+            "example": "<base 64 string>"
+          },
+          "preparedDigest": {
+            "type": "string",
+            "title": "PreparedDigest (Base64) to sign",
+            "example": "<base 64 string>"
+          },
+          "documentLink": {
+            "type": "string",
+            "title": "A (external) link to the corresponding document. Please contact fidentity to enable this feature since it needs special configuration.",
+            "example": "https://www.customer.ch/document.pdf"
+          }
+        }
+      },
+      "inputDocuments": {
+        "type": "array",
+        "title": "section for documents that will be signed electronically",
+        "items": {
+          "$ref": "#/components/schemas/inputDocument"
+        }
+      },
+      "inputDocument": {
+        "type": "object",
+        "title": "Input document data",
+        "required": [
+          "type",
+          "data",
+          "id"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "The id of the document",
+            "example": "37283719273"
+          },
+          "type": {
+            "type": "string",
+            "title": "type of document, values are used to distinguish the document types",
+            "default": "signature",
+            "example": "contract"
+          },
+          "title": {
+            "type": "string",
+            "title": "The document title",
+            "example": "Vorsorgevertrag"
+          },
+          "flatten": {
+            "type": "boolean",
+            "title": "If true, the document will be flattened. This means that all form fields will be removed and the document will be saved as a flat PDF. This is useful for signing documents that contain form fields.",
+            "default": false
+          },
+          "data": {
+            "type": "string",
+            "title": "The document data (base64)",
+            "example": "<base 64 string>"
+          },
+          "signature_position": {
+            "oneOf": [
+              {
+                "type": "object",
+                "title": "section to position the electronic signature",
+                "additionalProperties": false,
+                "properties": {
+                  "x": {
+                    "type": "number",
+                    "title": "The x position from the left in user space units (distance in inch*72)",
+                    "minimum": 0,
+                    "maximum": 1125,
+                    "example": 120
+                  },
+                  "y": {
+                    "type": "number",
+                    "title": "The y position from the top in user space units (distance in inch*72)",
+                    "minimum": 0,
+                    "maximum": 2436,
+                    "example": 60
+                  },
+                  "page": {
+                    "type": "number",
+                    "title": "The page index, starting at 0 for first page. Use -1 to place the signature on the last page.",
+                    "minimum": -1,
+                    "maximum": 10000,
+                    "example": 50
+                  }
+                }
+              },
+              {
+                "type": "object",
+                "title": "Placeholder string to position the electronic signature. This feature is only available if \"Signature\" type is set in processSteps.",
+                "additionalProperties": false,
+                "properties": {
+                  "placeholder": {
+                    "type": "string",
+                    "title": "Instead of coordinates and page number you can pass a placeholder string. The signature will be inserted at the first occurence of the placeholder in the pdf document. The placeholder in the pdf needs to be between 2 dollar signs: $$Signature-0001$$. However you must only pass the placeholder string to the request, without dollar signs. The placeholder in the pdf may also contain the desired width and height of the signature box as well as the desired signature text. Example1: $$Signature-0001,100,50$$ (Placeholdername, width, height) Example2: $$Signature-0001,100,50,Signed by John Doe$$ (Placeholdername, width, height, signature text).",
+                    "example": "Signature-0001"
+                  }
+                }
+              }
+            ]
+          },
+          "visualSignature": {
+            "type": "object",
+            "title": "section to define the visual size of the electronic signature",
+            "additionalProperties": false,
+            "properties": {
+              "text": {
+                "type": "string",
+                "title": "The text that will be displayed on the signature. Supports the following placeholders: {{date}}, {{time}},  {{datetime}} with optional format {{date | dd.MM.yyyy}}, {{time | HH:mm:ss}}, {{datetime | yy-MM-DDTHH:mm}}",
+                "example": "Signed by fidentity (this is the default if no custom text is passed)"
+              },
+              "image": {
+                "type": "string",
+                "title": "The base64 encoded image as Data Url (data:[<mediatype>][;base64],<data>) that will be displayed on the signature. Encoded, it should be no larger than 200Kb. Will be resized to fit the signature box. If you want the handwritten Signature as the visual Signature, you must pass an empty string and add the HandwrittenSignature Step to the processSteps array",
+                "example": "data:[<mediatype>][;base64],<data>"
+              },
+              "boxSize": {
+                "type": "object",
+                "title": "Total size of the visual signature box, containing the signature text and the image (in user space units = inches*72. For example: 1 inch = 2.54 cm = 72 user space units)",
+                "additionalProperties": false,
+                "properties": {
+                  "width": {
+                    "type": "number",
+                    "title": "Width of the signature box"
+                  },
+                  "height": {
+                    "type": "number",
+                    "title": "Height of the signature box"
+                  }
+                }
+              }
+            }
+          },
+          "signatureType": {
+            "type": "string",
+            "title": "Type of the signature, only relevant for QES case. Either 'sign' the document with QES or only 'seal' it. Useful for accompanying documents like 'terms and conditions' documents.",
+            "default": "sign",
+            "example": "sign",
+            "enum": [
+              "sign",
+              "seal"
+            ]
+          }
+        },
+        "example": {
+          "id": "37283719273",
+          "type": "signature",
+          "data": "<base 64 string>",
+          "signature_position": {
+            "x": 60,
+            "y": 100,
+            "page": 0
+          },
+          "visualSignature": {
+            "text": "Signed by fidentity",
+            "image": "<base 64 string>",
+            "boxSize": {
+              "width": 300,
+              "height": 50
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "openapi": "3.0.1",
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "fidentity offers the following form of authentication:\n- OAuth2: OAuth2 is an open protocol to allow secure authorization in a simple and standard method from web, mobile and desktop applications."
+    },
+    {
+      "name": "fidentity",
+      "description": "Start fidentity process and receive its data"
+    }
+  ],
+  "info": {
+    "version": "v1",
+    "title": "The fidentity API",
+    "x-logo": {
+      "url": "/static/img/logo_fidentity_rgb_positiv.svg",
+      "altText": "fidentity"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://demo.fidentity.ch/api/v1",
+      "description": "production server"
+    }
+  ]
+}
